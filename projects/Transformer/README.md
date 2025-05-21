@@ -1,3 +1,9 @@
+# 🧠 Transformer Language Model
+
+🚀 A clean and minimal PyTorch implementation of a Transformer-based autoregressive language model for text generation, inspired by the paper _"Attention is All You Need"_.
+
+---
+
 ## 📚 Table of Contents
 
 - [🔍 Overview](#-overview)  
