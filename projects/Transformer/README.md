@@ -1,33 +1,121 @@
-# Transformer implementation from scratch
-A codebase implementing a simple GPT-like model from scratch based on the [Attention is All You Need paper](https://arxiv.org/abs/1706.03762). The detailed theory explanation and a step by step guide on the Transformer architecture could be found in the article [Building a GPT-like Model from Scratch with Detailed Theory and Code Implementation](https://habr.com/en/company/ods/blog/708672/).
+## 📚 Table of Contents
 
-## Getting Started 
-Follow [setup instructions here](requirements.txt) to get started.
+- [🔍 Overview](#-overview)  
+- [✨ Features](#-features)  
+- [⚙️ Installation](#-installation)  
+- [📦 Usage](#-usage)  
+- [🧱 Model Architecture](#-model-architecture)  
+- [🔧 Configuration](#-configuration)  
+- [📊 Results](#-results)  
+- [🤝 Contributing](#-contributing)  
+- [📝 License](#-license)  
+
+---
+
+## 🔍 Overview
+
+This project implements a Transformer model for character or token-level language modeling using **PyTorch**. It includes:
+
+- BERT tokenizer support via HuggingFace 🤗  
+- Transformer architecture from scratch  
+- Positional embeddings 📍  
+- Autoregressive text generation 💬  
+
+---
+
+## ✨ Features
+
+✅ Multi-head self-attention  
+✅ Positional encodings  
+✅ Layer normalization & residual connections  
+✅ BERT-based tokenization  
+✅ Custom training loop  
+✅ Autoregressive text sampling  
+✅ Model checkpointing
+
+---
+
+## ⚙️ Installation
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/yourusername/transformer-language-model.git
+cd transformer-language-model
+pip install -r requirements.txt
 ```
-$ git clone https://github.com/bashnick/transformer.git
-$ cd transformer
-$ conda create --name transformer python=3.9 -y
-$ conda activate transformer
-$ pip install -r requirements.txt
+📦 Usage
+
+🚂 Training
+
+To train the model on your text dataset:
+
 ```
-
-Alternatively you can install it using pyenv.
+python train_model.py
 ```
-$ git clone https://github.com/bashnick/transformer.git
-$ cd transformer
-$ pyenv install 3.11.1
-$ pyenv virtualenv 3.11.1 transformer
-$ pyenv local transformer
-$ pip install -r requirements.txt
-```
+🔁 Training will:
 
-## Data
-Data is taken from the [DCEP: Digital Corpus of the European Parliament](https://joint-research-centre.ec.europa.eu/language-technology-resources/dcep-digital-corpus-european-parliament_en#Format%20and%20Structure%20of%20the%20Data). It has a variety of document types, from press releases to session and legislative documents related to European Parliament's activities and bodies. The current version of the corpus contains documents
-that were produced between 2001 and 2012.
+    1. Load and tokenize text using BERT tokenizer
+    2. Train using AdamW optimizer
+    3. Print loss every few steps
+    4. Save the model checkpoint at the end
 
-## Contributing
-You are welcome to contribute to the repository with your PRs!
+✍️ Generating Text
+After training, you can generate new text:
+    
+    import torch
+    from model import Transformer
+    from transformers import AutoTokenizer
+    from utils import decode, DEVICE, BLOCK_SIZE
 
-## License
+# Load tokenizer and model
+    tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+    model = Transformer(...)  # Load your config
+    model.load_state_dict(torch.load("checkpoints/model.pt"))
+    model.to(DEVICE)
+    model.eval()
 
-The MIT License (MIT)
+    prompt = "The future of AI"
+    input_ids = tokenizer.encode(prompt, return_tensors="pt").to(DEVICE)
+
+    generated_ids = model.generate(idx=input_ids, max_new_tokens=50, block_size=BLOCK_SIZE)
+    print(decode(generated_ids[0], tokenizer=tokenizer))
+
+🧱 Model Architecture
+
+    Input → [Token Embedding + Positional Embedding] → 
+    → Transformer Blocks (N) → 
+    → Linear → Softmax
+    Each Transformer Block includes:
+
+    💫 Multi-head Self-Attention
+
+    🔄 Residual Connections
+
+    🧮 Layer Normalization
+
+    💥 Feed Forward Network
+
+
+📊 Results
+Example generation after training:
+
+    Prompt: The future of AI
+    Output: The future of AI is not only exciting but full of potential and responsibility...
+    Loss is printed during training for both training and validation sets.
+
+🤝 Contributing
+Contributions are welcome!
+
+🛠️ Feel free to open issues, ask questions, or submit PRs!
+
+📝 License
+This project is licensed under the MIT License.
+See the LICENSE file for more details.
+
+🙏 Acknowledgements
+🔬 "Attention Is All You Need" Paper
+
+🤗 HuggingFace Transformers
+
+Built with ❤️ for learning, building, and sharing.
